@@ -1,0 +1,26 @@
+<ContentDialog
+    x:Class="stepPrompterWinUI.Dialogs.EditStepDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:stepPrompterWinUI.Models"
+    mc:Ignorable="d"
+    Title="Edit Step"
+    PrimaryButtonText="Save"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <StackPanel>
+        <TextBox Header="Step Name" Text="{x:Bind Step.Title, Mode=TwoWay}"/>
+        <ListView ItemsSource="{x:Bind Step.Descriptions, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:SubStep">
+                    <TextBox Text="{x:Bind Description, Mode=TwoWay}" PlaceholderText="Enter step Description"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!-- Add other controls for editing SubSteps as needed -->
+        <!-- ... -->
+    </StackPanel>
+</ContentDialog>

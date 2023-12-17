@@ -1,0 +1,75 @@
+<Page
+    x:Class="stepPrompterWinUI.Pages.CreateStepPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    x:Name="PageRoot"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:stepPrompterWinUI.Pages"
+    xmlns:model="using:stepPrompterWinUI.Models"
+    xmlns:viewmodels="using:stepPrompterWinUI.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <viewmodels:CreateStepPageViewModel/>
+    </Page.DataContext>
+
+    <Pivot x:Name="MainPivot">
+        <!-- Create new step pivot item -->
+        <PivotItem Header="Create">
+            <StackPanel Padding="20">
+                <TextBlock Text="Create New Step" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBox Header="Step Title" PlaceholderText="Enter step title"
+                         Text="{x:Bind ViewModel.StepTitle, Mode=TwoWay}" Margin="0,20,0,10"/>
+                <TextBlock Text="Sub Steps:" Margin="0,20,0,10"/>
+                <ListView x:Name="SubStepListView" ItemsSource="{x:Bind ViewModel.SubSteps}" Margin="10">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:SubStep">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Text="{x:Bind Description, Mode=TwoWay}" PlaceholderText="Enter description"/>
+                                <!-- Add any other controls for SubStep properties here -->
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button Content="Add SubStep" Command="{x:Bind ViewModel.AddSubStepCommand}" Margin="0,10,0,0"/>
+                <Button Content="Add Step" Command="{x:Bind ViewModel.AddStepCommand}" Margin="0,10,0,0"/>
+                <Button Content="Save All Steps" Command="{x:Bind ViewModel.SaveAllStepsCommand}" Margin="0,10,0,0"/>
+            </StackPanel>
+        </PivotItem>
+
+        <!-- Edit existing steps pivot item -->
+        <PivotItem x:Name="EditPivotItem" Header="Edit">
+            <StackPanel Padding="20">
+                <TextBlock Text="Edit Steps" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <!-- ListView to select and edit steps -->
+                <ListView x:Name="StepsListView" ItemsSource="{x:Bind ViewModel.StepsCollection, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Step">
+                            <StackPanel>
+                                <!-- Display the step title and edit button -->
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{x:Bind Title, Mode=OneWay}" VerticalAlignment="Center"/>
+                                    <Button Content="Edit" Command="{Binding DataContext.EditStepCommand, ElementName=PageRoot}" CommandParameter="{x:Bind}" />
+
+                                </StackPanel>
+                                <!-- ListView for descriptions within a step -->
+                                <ListView ItemsSource="{x:Bind Descriptions, Mode=OneWay}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:SubStep">
+                                            <TextBlock Text="{x:Bind Description, Mode=OneWay}" />
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!-- Updated this button to use a command -->
+                <Button Content="Save All Steps" Command="{x:Bind ViewModel.SaveAllStepsCommand}" Margin="0,10,0,0"/>
+            </StackPanel>
+        </PivotItem>
+
+    </Pivot>
+</Page>

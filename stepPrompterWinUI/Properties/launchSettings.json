@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "stepPrompterWinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "stepPrompterWinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
